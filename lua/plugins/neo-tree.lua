@@ -12,22 +12,6 @@ return {
   cmd = 'Neotree',
   keys = {
     { '<leader>e', '<cmd>Neotree toggle position=right<CR>', { desc = 'NeoTree reveal' } },
-    -- {
-    --   '<leader>e',
-    --   function()
-    --     local manager = require 'neo-tree.sources.manager'
-    --     local renderer = require 'neo-tree.ui.renderer'
-    --
-    --     local state = manager.get_state 'filesystem'
-    --     local window_exists = renderer.window_exists(state)
-    --     if window_exists then
-    --       vim.cmd 'Neotree close'
-    --     else
-    --       vim.cmd 'Neotree reveal position=right'
-    --     end
-    --   end,
-    --   { desc = 'NeoTree reveal' },
-    -- },
   },
   opts = {
     filesystem = {
@@ -50,6 +34,8 @@ return {
       },
     },
 
+    -- this auto command triggers neo-tree to update the selected file in the tree
+    -- to the file in the buffer, but only if neo-tree is open.
     vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
       callback = function()
         local manager = require 'neo-tree.sources.manager'
