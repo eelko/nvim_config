@@ -11,13 +11,29 @@ return {
   },
   cmd = 'Neotree',
   keys = {
-    { '<leader>e', '<cmd>Neotree reveal<CR>', { desc = 'NeoTree reveal' } },
+    { '<leader>e', '<cmd>Neotree toggle position=right<CR>', { desc = 'NeoTree reveal' } },
+    -- {
+    --   '<leader>e',
+    --   function()
+    --     local manager = require 'neo-tree.sources.manager'
+    --     local renderer = require 'neo-tree.ui.renderer'
+    --
+    --     local state = manager.get_state 'filesystem'
+    --     local window_exists = renderer.window_exists(state)
+    --     if window_exists then
+    --       vim.cmd 'Neotree close'
+    --     else
+    --       vim.cmd 'Neotree reveal position=right'
+    --     end
+    --   end,
+    --   { desc = 'NeoTree reveal' },
+    -- },
   },
   opts = {
     filesystem = {
       window = {
         mappings = {
-          ['<leader>e'] = 'close_window',
+          -- ['<leader>e'] = 'close_window',
           ['l'] = 'open',
           ['h'] = 'close_node',
           ['<space>'] = 'none',
@@ -33,6 +49,35 @@ return {
         },
       },
     },
+
+    vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
+      callback = function()
+        local manager = require 'neo-tree.sources.manager'
+        local renderer = require 'neo-tree.ui.renderer'
+        local state = manager.get_state 'filesystem'
+        local window_exists = renderer.window_exists(state)
+        if window_exists then
+          local reveal_file = vim.fn.expand '%:p'
+          if reveal_file == '' then
+            reveal_file = vim.fn.getcwd()
+          else
+            local f = io.open(reveal_file, 'r')
+            if f then
+              f.close(f)
+            else
+              reveal_file = vim.fn.getcwd()
+            end
+          end
+          require('neo-tree.command').execute {
+            action = 'show',
+            source = 'filesystem',
+            position = 'right',
+            reveal_file = reveal_file,
+            reveal_force_cwd = true,
+          }
+        end
+      end,
+    }),
   },
 
   default_component_configs = {
