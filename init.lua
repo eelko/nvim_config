@@ -159,7 +159,6 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Lazy package manager
-vim.keymap.set('n', '<leader>p', '', { desc = 'Plugins' })
 vim.keymap.set('n', '<leader>pl', '<cmd>Lazy<CR>', { desc = 'Lazy' })
 vim.keymap.set('n', '<leader>pm', '<cmd>Mason<CR>', { desc = 'Mason' })
 
@@ -196,6 +195,17 @@ vim.keymap.set('n', '<leader>ba', '<cmd>%bd<CR><cmd>e#<CR><cmd>bd#<CR>', { desc 
 vim.keymap.set('n', '<leader>bc', '<cmd>bp<bar>sp<bar>bn<bar>bd<CR>', { desc = 'Close buffer' })
 -- Clangd switch between source and header file
 vim.keymap.set('n', 'gs', '<cmd>:ClangdSwitchSourceHeader<cr>', { desc = 'Switch between source/header' })
+
+-- Description fields for Which-key
+vim.keymap.set('n', '<leader>x', '', { desc = 'quicklist' })
+vim.keymap.set('n', '<leader>b', '', { desc = 'buffer' })
+vim.keymap.set('n', '<leader>d', '', { desc = 'debug' })
+vim.keymap.set('n', '<leader>f', '', { desc = 'find' })
+vim.keymap.set('n', '<leader>l', '', { desc = 'language' })
+vim.keymap.set('n', '<leader>w', '', { desc = 'workspace' })
+vim.keymap.set('n', '<leader>t', '', { desc = 'toggle' })
+vim.keymap.set('n', '<leader>g', '', { desc = 'git' })
+vim.keymap.set('n', '<leader>p', '', { desc = 'plugins' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -290,23 +300,6 @@ require('lazy').setup({
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
       require('which-key').setup()
-
-      -- Document existing key chains
-      require('which-key').register {
-        -- ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        -- ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>x'] = { name = 'quicklist', _ = 'which_key_ignore' },
-        ['<leader>b'] = { name = 'buffer', _ = 'which_key_ignore' },
-        ['<leader>f'] = { name = 'find', _ = 'which_key_ignore' },
-        ['<leader>l'] = { name = 'language', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = 'workspace', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = 'toggle', _ = 'which_key_ignore' },
-        ['<leader>g'] = { name = 'git', _ = 'which_key_ignore' },
-      }
-      -- visual mode
-      require('which-key').register({
-        -- ['<leader>h'] = { 'git [h]unk' },
-      }, { mode = 'v' })
     end,
   },
 
