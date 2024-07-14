@@ -71,7 +71,7 @@ vim.opt.signcolumn = 'yes'
 vim.opt.backspace = 'indent,eol,start' -- allow backspace on indent, end of line or insert mode start position
 
 -- Decrease update time
-vim.opt.updatetime = 250
+vim.opt.updatetime = 150
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
@@ -109,6 +109,8 @@ vim.cmd [[let &t_Ce = "\e[4:0m"]]
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+-- Highlight search while typing
+vim.opt.incsearch = true
 
 -- Diagnostic keymaps
 -- The next two lines are covered by `mini.bracketed`
@@ -194,6 +196,7 @@ vim.keymap.set('n', '<leader>ba', '<cmd>%bd<CR><cmd>e#<CR><cmd>bd#<CR>', { desc 
 vim.keymap.set('n', '<leader>bc', '<cmd>bp<bar>sp<bar>bn<bar>bd<CR>', { desc = 'Close buffer' })
 -- Clangd switch between source and header file
 vim.keymap.set('n', 'gs', '<cmd>:ClangdSwitchSourceHeader<cr>', { desc = 'Switch between source/header' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -551,16 +554,6 @@ require('lazy').setup({
               end,
             })
           end
-
-          -- The following autocommand is used to enable inlay hints in your
-          -- code, if the language server you are using supports them
-          --
-          -- This may be unwanted, since they displace some of your code
-          if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-            map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-            end, '[T]oggle Inlay [H]ints')
-          end
         end,
       })
 
@@ -897,12 +890,23 @@ require('lazy').setup({
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {
+      options = {
+        component_separators = { left = '', right = '' }, --󰤃󰿈󰿟
+        section_separators = { left = '', right = '' },
+      },
       sections = {
-        lualine_a = { 'mode' },
-        lualine_b = { 'branch', 'diff', 'diagnostics' },
+        lualine_a = { {
+          'mode',
+          fmt = function(res)
+            return res:sub(1, 1)
+          end,
+        } },
+        lualine_b = { 'branch' },
         lualine_c = { 'filename' },
-        lualine_x = { 'encoding', 'fileformat', 'filetype' },
-        lualine_y = { 'progress', 'location' },
+        lualine_x = { 'diagnostics' },
+        -- lualine_x = { 'encoding', 'fileformat', 'filetype' },
+        -- lualine_y = { 'progress', 'location' },
+        lualine_y = { 'diff' },
         lualine_z = {
           function()
             return ' ' .. os.date '%R'
@@ -943,6 +947,15 @@ require('lazy').setup({
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
+  {
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    ft = { 'markdown' },
+    build = function()
+      vim.fn['mkdp#util#install']()
+    end,
+  },
+
   -- {
   --   'goolord/alpha-nvim',
   --   dependencies = { 'nvim-tree/nvim-web-devicons' },
