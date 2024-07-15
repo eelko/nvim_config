@@ -820,6 +820,7 @@ require('lazy').setup({
     },
   },
   { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
+  { 'cocopon/iceberg.vim', name = 'iceberg', priority = 1000 },
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is.
@@ -894,8 +895,8 @@ require('lazy').setup({
             return res:sub(1, 1)
           end,
         } },
-        lualine_b = { 'branch' },
-        lualine_c = { 'filename' },
+        lualine_b = { 'filename' },
+        lualine_c = { 'branch' },
         lualine_x = { 'diagnostics' },
         -- lualine_x = { 'encoding', 'fileformat', 'filetype' },
         -- lualine_y = { 'progress', 'location' },
