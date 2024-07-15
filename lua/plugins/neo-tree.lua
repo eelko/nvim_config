@@ -19,7 +19,9 @@ return {
         mappings = {
           -- ['<leader>e'] = 'close_window',
           ['l'] = 'open',
+          ['<right>'] = 'open',
           ['h'] = 'close_node',
+          ['<left>'] = 'close_node',
           ['<space>'] = 'none',
           ['Y'] = {
             function(state)
