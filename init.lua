@@ -196,6 +196,10 @@ vim.keymap.set('n', '<leader>bc', '<cmd>bp<bar>sp<bar>bn<bar>bd<CR>', { desc = '
 -- Clangd switch between source and header file
 vim.keymap.set('n', 'gs', '<cmd>:ClangdSwitchSourceHeader<cr>', { desc = 'Switch between source/header' })
 
+vim.keymap.set('n', '<leader>um', '<cmd>colorscheme catppuccin-mocha<CR>', { desc = 'catppuccin-mocha' })
+vim.keymap.set('n', '<leader>ul', '<cmd>colorscheme catppuccin-latte<CR>', { desc = 'catppuccin-latte' })
+vim.keymap.set('n', '<leader>un', '<cmd>colorscheme tokyonight-night<CR>', { desc = 'tokyonight-night' })
+
 -- Description fields for Which-key
 vim.keymap.set('n', '<leader>x', '', { desc = 'quicklist' })
 vim.keymap.set('n', '<leader>b', '', { desc = 'buffer' })
