@@ -46,7 +46,10 @@ end
 --  For more options, you can see `:help option-list`
 
 vim.opt.number = true
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
+
+-- absolute and relative combined
+vim.opt.statuscolumn = '%s %l %r'
 
 vim.opt.mouse = 'a'
 -- Don't show the mode, since it's already in the status line
