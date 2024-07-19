@@ -49,13 +49,17 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- absolute and relative combined
-vim.opt.statuscolumn = '%s %l %r'
+vim.opt.statuscolumn = '%s %l %r '
+
+-- Keep signcolumn on by default
+vim.opt.signcolumn = 'yes'
 
 vim.opt.mouse = 'a'
+
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
+
 -- Sync clipboard between OS and Neovim.
---  See `:help 'clipboard'`
 vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
@@ -67,9 +71,6 @@ vim.opt.undofile = true
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
-
--- Keep signcolumn on by default
-vim.opt.signcolumn = 'yes'
 
 vim.opt.backspace = 'indent,eol,start' -- allow backspace on indent, end of line or insert mode start position
 
@@ -112,6 +113,7 @@ vim.cmd [[let &t_Ce = "\e[4:0m"]]
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
 -- Highlight search while typing
 vim.opt.incsearch = true
 
@@ -121,6 +123,10 @@ vim.opt.incsearch = true
 -- vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>le', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>xq', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
+-- Undotree
+vim.keymap.set('n', '<leader>ut', vim.cmd.UndotreeToggle, { desc = 'Undo Tree' })
+vim.keymap.set('n', '<leader>tu', vim.cmd.UndotreeToggle, { desc = 'Toggle Undo Tree' })
 
 -- Increment/decrement
 vim.keymap.set('n', '+', '<C-a>')
@@ -182,6 +188,10 @@ vim.keymap.set({ 'n', 'x' }, '<Down>', "v:count == 0 ? 'gj' : 'j'", { desc = 'Do
 vim.keymap.set({ 'n', 'x' }, 'k', "v:count == 0 ? 'gk' : 'k'", { desc = 'Up', expr = true, silent = true })
 vim.keymap.set({ 'n', 'x' }, '<Up>', "v:count == 0 ? 'gk' : 'k'", { desc = 'Up', expr = true, silent = true })
 
+-- insert newline without leaving normal mode
+vim.keymap.set('n', '<leader>o', 'o<esc>', { desc = 'insert newline below', silent = true })
+vim.keymap.set('n', '<leader>O', 'O<esc>', { desc = 'insert newline above', silent = true })
+
 -- Resize window using <ctrl> arrow keys
 vim.keymap.set('n', '<C-Up>', '<cmd>resize +2<cr>', { desc = 'Increase Window Height' })
 vim.keymap.set('n', '<C-Down>', '<cmd>resize -2<cr>', { desc = 'Decrease Window Height' })
@@ -200,6 +210,7 @@ vim.keymap.set('v', '<A-k>', ":m '<-2<cr>gv=gv", { desc = 'Move Up' })
 vim.keymap.set('n', '<leader>b', '', { desc = 'Buffers' })
 vim.keymap.set('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
 vim.keymap.set('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
+
 -- The next two lines are covered by `mini.bracketed`
 -- vim.keymap.set('n', '[b', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
 -- vim.keymap.set('n', ']b', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
@@ -207,12 +218,16 @@ vim.keymap.set('n', '<leader>bd', '<cmd>:bd<cr>', { desc = 'Delete Buffer and Wi
 vim.keymap.set('n', '<leader>bb', '<cmd>Telescope buffers<cr>', { desc = 'Telescope Buffers' })
 vim.keymap.set('n', '<leader>ba', '<cmd>%bd<CR><cmd>e#<CR><cmd>bd#<CR>', { desc = 'Close all buffers but this one' })
 vim.keymap.set('n', '<leader>bc', '<cmd>bp<bar>sp<bar>bn<bar>bd<CR>', { desc = 'Close buffer' })
+
 -- Clangd switch between source and header file
 vim.keymap.set('n', 'gs', '<cmd>:ClangdSwitchSourceHeader<cr>', { desc = 'Switch between source/header' })
 
+-- Colorscheme quick access
 vim.keymap.set('n', '<leader>um', '<cmd>colorscheme catppuccin-mocha<CR>', { desc = 'catppuccin-mocha' })
 vim.keymap.set('n', '<leader>ul', '<cmd>colorscheme catppuccin-latte<CR>', { desc = 'catppuccin-latte' })
 vim.keymap.set('n', '<leader>un', '<cmd>colorscheme tokyonight-night<CR>', { desc = 'tokyonight-night' })
+vim.keymap.set('n', '<leader>ugl', '<cmd>colorscheme github_light<CR>', { desc = 'github_light' })
+vim.keymap.set('n', '<leader>ugd', '<cmd>colorscheme github_dark_default<CR>', { desc = 'github_dark' })
 
 -- Description fields for Which-key
 vim.keymap.set('n', '<leader>x', '', { desc = 'quicklist' })
@@ -224,6 +239,7 @@ vim.keymap.set('n', '<leader>w', '', { desc = 'workspace' })
 vim.keymap.set('n', '<leader>t', '', { desc = 'toggle' })
 vim.keymap.set('n', '<leader>g', '', { desc = 'git' })
 vim.keymap.set('n', '<leader>p', '', { desc = 'plugins' })
+vim.keymap.set('n', '<leader>u', '', { desc = 'ux' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -319,6 +335,7 @@ require('lazy').setup({
     opts = {
       -- your configuration comes here
       -- or leave it empty to use the default settings
+      --      icons.rules = false
     },
     keys = {
       {
@@ -331,12 +348,7 @@ require('lazy').setup({
     },
   },
 
-  -- NOTE: Plugins can specify dependencies.
-  --
-  -- The dependencies are proper plugin specifications as well - anything
-  -- you do for a plugin at the top level, you can do for a dependency.
-  --
-  -- Use the `dependencies` key to specify the dependencies of a particular plugin
+  { 'mbbill/undotree' },
 
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
@@ -847,23 +859,16 @@ require('lazy').setup({
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
+  { 'projekt0n/github-nvim-theme', name = 'github', priority = 1000 },
   { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
   { 'cocopon/iceberg.vim', name = 'iceberg', priority = 1000 },
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+  {
     'folke/tokyonight.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
       vim.cmd.colorscheme 'tokyonight-night'
-
       -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment gui=none'
+      vim.cmd.hi 'Comment gui=italic'
     end,
   },
 
