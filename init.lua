@@ -57,13 +57,19 @@ vim.opt.signcolumn = 'yes'
 vim.opt.mouse = 'a'
 
 -- Don't show the mode, since it's already in the status line
-vim.opt.showmode = false
+-- vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
 vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.opt.breakindent = true
+
+-- tabstop
+vim.opt.tabstop = 4 -- A TAB character looks like 4 spaces
+vim.opt.expandtab = true -- Pressing the TAB key will insert spaces instead of a TAB character
+vim.opt.softtabstop = 4 -- Number of spaces inserted instead of a TAB character
+vim.opt.shiftwidth = 4 -- Number of spaces inserted when indenting
 
 -- Save undo history
 vim.opt.undofile = true
@@ -79,7 +85,7 @@ vim.opt.updatetime = 150
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
-vim.opt.timeoutlen = 1000
+vim.opt.timeoutlen = 250
 
 -- Configure how new splits should be opened
 vim.opt.splitright = true
@@ -118,11 +124,10 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.opt.incsearch = true
 
 -- Diagnostic keymaps
--- The next two lines are covered by `mini.bracketed`
--- vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
--- vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
-vim.keymap.set('n', '<leader>le', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>xq', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous Diagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next Diagnostic message' })
+vim.keymap.set('n', '<leader>le', vim.diagnostic.open_float, { desc = 'Show diagnostic Error messages' })
+vim.keymap.set('n', '<leader>xq', vim.diagnostic.setloclist, { desc = 'Open diagnostic Quickfix list' })
 
 -- Undotree
 vim.keymap.set('n', '<leader>ut', vim.cmd.UndotreeToggle, { desc = 'Undo Tree' })
@@ -211,9 +216,8 @@ vim.keymap.set('n', '<leader>b', '', { desc = 'Buffers' })
 vim.keymap.set('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
 vim.keymap.set('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
 
--- The next two lines are covered by `mini.bracketed`
--- vim.keymap.set('n', '[b', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
--- vim.keymap.set('n', ']b', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
+vim.keymap.set('n', '[b', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
+vim.keymap.set('n', ']b', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
 vim.keymap.set('n', '<leader>bd', '<cmd>:bd<cr>', { desc = 'Delete Buffer and Window' })
 vim.keymap.set('n', '<leader>bb', '<cmd>Telescope buffers<cr>', { desc = 'Telescope Buffers' })
 vim.keymap.set('n', '<leader>ba', '<cmd>%bd<CR><cmd>e#<CR><cmd>bd#<CR>', { desc = 'Close all buffers but this one' })
@@ -228,6 +232,13 @@ vim.keymap.set('n', '<leader>ul', '<cmd>colorscheme catppuccin-latte<CR>', { des
 vim.keymap.set('n', '<leader>un', '<cmd>colorscheme tokyonight-night<CR>', { desc = 'tokyonight-night' })
 vim.keymap.set('n', '<leader>ugl', '<cmd>colorscheme github_light<CR>', { desc = 'github_light' })
 vim.keymap.set('n', '<leader>ugd', '<cmd>colorscheme github_dark_default<CR>', { desc = 'github_dark' })
+
+-- quickfix
+
+vim.keymap.set('n', '[q', '<cmd>cprevious<cr>', { desc = 'Prev quickfix' })
+vim.keymap.set('n', ']q', '<cmd>cnext<cr>', { desc = 'Next quickfix' })
+vim.keymap.set('n', '[Q', '<cmd>cfirst<cr>', { desc = 'First quickfix' })
+vim.keymap.set('n', ']Q', '<cmd>clast<cr>', { desc = 'last quickfix' })
 
 -- Description fields for Which-key
 vim.keymap.set('n', '<leader>x', '', { desc = 'quicklist' })
@@ -296,6 +307,8 @@ require('lazy').setup({
       },
     },
   },
+  -- bla
+  --
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
   --    require('gitsigns').setup({ ... })
@@ -310,6 +323,13 @@ require('lazy').setup({
         delete = { text = '_' },
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
+      },
+      signs_staged = {
+        add = { text = '┃+' },
+        change = { text = '┃~' },
+        delete = { text = '┃_' },
+        topdelete = { text = '┃‾' },
+        changedelete = { text = '┃~' },
       },
     },
   },
@@ -348,6 +368,22 @@ require('lazy').setup({
     },
   },
 
+  -- {
+  --   'smolck/command-completion.nvim',
+  --   opts = {
+  --     border = nil, -- What kind of border to use, passed through directly to `nvim_open_win()`,
+  --     -- see `:help nvim_open_win()` for available options (e.g. 'single', 'double', etc.)
+  --     max_col_num = 5, -- Maximum number of columns to display in the completion window
+  --     min_col_width = 20, -- Minimum width of completion window columns
+  --     use_matchfuzzy = true, -- Whether or not to use `matchfuzzy()` (see `:help matchfuzzy()`)
+  --     -- to order completion results
+  --     highlight_selection = true, -- Whether or not to highlight the currently
+  --     -- selected item, not sure why this is an option tbh
+  --     highlight_directories = true, -- Whether or not to higlight directories with
+  --     -- the Directory highlight group (`:help hl-Directory`)
+  --     tab_completion = true, -- Whether or not tab completion on displayed items is enabled
+  --   },
+  -- },
   { 'mbbill/undotree' },
 
   { -- Fuzzy Finder (files, lsp, etc)
@@ -423,14 +459,14 @@ require('lazy').setup({
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
-      vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Find [H]elp' })
-      vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = 'Find [K]eymaps' })
-      vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find [F]iles' })
-      vim.keymap.set('n', '<leader>fs', builtin.builtin, { desc = 'Find [S]elect Telescope' })
-      vim.keymap.set('n', '<leader>fc', builtin.grep_string, { desc = 'Find [c]urrent' })
-      vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = 'Find by [G]rep' })
-      vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = 'Find [D]iagnostics' })
-      vim.keymap.set('n', '<leader>fr', builtin.resume, { desc = 'Find [R]esume' })
+      vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Find Help' })
+      vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = 'Find Keymaps' })
+      vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find Files' })
+      vim.keymap.set('n', '<leader>fs', builtin.builtin, { desc = 'Find Select Telescope' })
+      vim.keymap.set('n', '<leader>fc', builtin.grep_string, { desc = 'Find current' })
+      vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = 'Find by Grep' })
+      vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = 'Find Diagnostics' })
+      vim.keymap.set('n', '<leader>f<cr>', builtin.resume, { desc = 'Find Resume' })
       vim.keymap.set('n', '<leader>f.', builtin.oldfiles, { desc = 'Find Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Find existing buffers' })
       vim.keymap.set('n', '<leader>fC', builtin.colorscheme, { desc = 'Find existing Colorscheme' })
@@ -442,7 +478,7 @@ require('lazy').setup({
           winblend = 10,
           previewer = false,
         })
-      end, { desc = '[/] Fuzzily search in current buffer' })
+      end, { desc = '/ Fuzzily search in current buffer' })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
@@ -451,12 +487,16 @@ require('lazy').setup({
           grep_open_files = true,
           prompt_title = 'Live Grep in Open Files',
         }
-      end, { desc = 'Find [/] in Open Files' })
+      end, { desc = 'Find / in Open Files' })
 
       -- Shortcut for searching your Neovim configuration files
-      vim.keymap.set('n', '<leader>fn', function()
+      vim.keymap.set('n', '<leader>fn', '', { desc = 'neovim config...' })
+      vim.keymap.set('n', '<leader>fnf', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = 'Find [N]eovim files' })
+      end, { desc = 'Find Neovim Files' })
+      vim.keymap.set('n', '<leader>fnw', function()
+        builtin.live_grep { cwd = vim.fn.stdpath 'config' }
+      end, { desc = 'Find Neovim Words' })
     end,
   },
 
@@ -468,13 +508,9 @@ require('lazy').setup({
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
-      -- Useful status updates for LSP.
+      -- Useful status updates for LSP. in the right bottom corner.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
-
-      -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
-      -- used for completion, annotations and signatures of Neovim apis
-      { 'folke/neodev.nvim', opts = {} },
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -521,23 +557,23 @@ require('lazy').setup({
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gd', require('telescope.builtin').lsp_definitions, 'Goto Definition')
 
           -- Find references for the word under your cursor.
-          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+          map('gr', require('telescope.builtin').lsp_references, 'Goto References')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
-          map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+          map('gI', require('telescope.builtin').lsp_implementations, 'Goto Implementation')
 
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
-          map('<leader>lD', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+          map('<leader>lD', require('telescope.builtin').lsp_type_definitions, 'Type Definition')
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ls', require('telescope.builtin').lsp_document_symbols, '[S]ymbols')
+          map('<leader>ls', require('telescope.builtin').lsp_document_symbols, 'Symbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
@@ -545,11 +581,11 @@ require('lazy').setup({
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
-          map('<leader>lr', vim.lsp.buf.rename, '[L]SP [R]ename under cursor')
+          map('<leader>lr', vim.lsp.buf.rename, 'LSP Rename under cursor')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
-          map('<leader>la', vim.lsp.buf.code_action, 'Code [A]ction')
+          map('<leader>la', vim.lsp.buf.code_action, 'Code Action')
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap.
@@ -557,7 +593,7 @@ require('lazy').setup({
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('gD', vim.lsp.buf.declaration, 'Goto Declaration')
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
@@ -694,7 +730,7 @@ require('lazy').setup({
           require('conform').format { async = true, lsp_fallback = true }
         end,
         mode = '',
-        desc = '[L]SP [F]ormat buffer',
+        desc = 'LSP Format buffer',
       },
     },
     opts = {
@@ -775,16 +811,16 @@ require('lazy').setup({
         --
         -- No, but seriously. Please read `:help ins-completion`, it is really good!
         mapping = cmp.mapping.preset.insert {
-          -- Select the [n]ext item
+          -- Select the next item
           ['<C-n>'] = cmp.mapping.select_next_item(),
-          -- Select the [p]revious item
+          -- Select the previous item
           ['<C-p>'] = cmp.mapping.select_prev_item(),
 
-          -- Scroll the documentation window [b]ack / [f]orward
+          -- Scroll the documentation window back / forward
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
 
-          -- Accept ([y]es) the completion.
+          -- Accept (yes) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
           ['<C-y>'] = cmp.mapping.confirm { select = true },
@@ -875,13 +911,13 @@ require('lazy').setup({
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
-  { -- Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
-    config = function()
-      --Go forward/backward with square brackets
-      require('mini.bracketed').setup()
-    end,
-  },
+  -- { -- Collection of various small independent plugins/modules
+  --   'echasnovski/mini.nvim',
+  --   config = function()
+  --     --Go forward/backward with square brackets
+  --     require('mini.bracketed').setup()
+  --   end,
+  -- },
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
