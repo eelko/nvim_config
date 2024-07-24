@@ -166,7 +166,7 @@ vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Oil parent directory' })
 --
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', '<S-Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -260,6 +260,17 @@ vim.keymap.set('n', '<leader>t', '', { desc = 'toggle' })
 vim.keymap.set('n', '<leader>g', '', { desc = 'git' })
 vim.keymap.set('n', '<leader>p', '', { desc = 'plugins' })
 vim.keymap.set('n', '<leader>u', '', { desc = 'ux' })
+
+-- [[ Custom commands ]]
+local function get_git_root()
+  local dot_git_path = vim.fn.finddir('.git', '.;')
+  return vim.fn.fnamemodify(dot_git_path, ':h')
+end
+vim.api.nvim_create_user_command('CdGitRoot', function()
+  vim.api.nvim_set_current_dir(get_git_root())
+end, {})
+
+vim.keymap.set('n', '<leader>br', '<cmd>CdGitRoot<CR>', { desc = 'change CWD to git root of buffer' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
