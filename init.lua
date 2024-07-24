@@ -109,6 +109,9 @@ vim.opt.scrolloff = 10
 -- Set spelling on
 vim.opt.spell = true
 
+-- Tab completion behavior set to tcsh mode
+vim.opt.wildmode = 'longest,list'
+
 -- Undercurl
 vim.cmd [[let &t_Cs = "\e[4:3m"]]
 vim.cmd [[let &t_Ce = "\e[4:0m"]]
@@ -139,6 +142,12 @@ vim.keymap.set('n', '_', '<C-x>')
 
 --select all
 vim.keymap.set('n', '<C-a>', 'ggVG', { desc = 'select all' })
+
+-- CommandLine Navigatiom
+vim.keymap.set('c', '<C-a>', '<Home>', { desc = 'Home' })
+
+-- the following will remap the tab function in command, but we can also change this with option '':set wildmode=longest,list'
+-- vim.keymap.set('c', '<Tab>', '<C-L><C-D>', { desc = 'tcsh tab completion' })
 
 -- select up down with shift
 vim.keymap.set('n', '<S-up>', 'V<up>')
