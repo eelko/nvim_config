@@ -659,24 +659,60 @@ require('lazy').setup({
       }
     end,
   },
-
   {
-    'rmagatti/auto-session',
-    config = function()
-      local auto_session = require 'auto-session'
-
-      auto_session.setup {
-        auto_restore_enabled = false,
-        auto_session_suppress_dirs = { '~/', '~/Dev/', '~/Downloads', '~/Documents', '~/Desktop/' },
-      }
-
-      local keymap = vim.keymap
-
-      keymap.set('n', '<leader>wr', '<cmd>SessionRestore<CR>', { desc = 'Restore session for cwd' }) -- restore last workspace session for current directory
-      keymap.set('n', '<leader>ws', '<cmd>SessionSave<CR>', { desc = 'Save session for auto session root dir' }) -- save workspace session for current working directory
-    end,
+    'folke/persistence.nvim',
+    event = 'BufReadPre',
+    opts = {},
+  -- stylua: ignore
+    keys = {
+      { "<leader>wr", function() require("persistence").load() end, desc = "Restore Session" },
+      { "<leader>wl", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
+      { "<leader>wd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
+    },
   },
-
+  -- {
+  --   'stevearc/resession.nvim',
+  --   event = 'VeryLazy',
+  --   opts = {
+  --     autosave = {
+  --       enabled = true,
+  --       interval = 60,
+  --       notify = true,
+  --     },
+  --   },
+  --   config = function()
+  --     local resession = require 'resession'
+  --     -- Resession does NOTHING automagically, so we have to set up some keymaps
+  --     vim.keymap.set('n', '<leader>ws', resession.save, { desc = 'Session Save' })
+  --     vim.keymap.set('n', '<leader>wl', resession.load, { desc = 'Session Load' })
+  --     vim.keymap.set('n', '<leader>wd', resession.delete, { desc = 'Session Delete' })
+  --     --
+  --     -- Automatically save a session when you exit Neovim
+  --     vim.api.nvim_create_autocmd('VimLeavePre', {
+  --       callback = function()
+  --         -- Always save a special session named "last"
+  --         resession.save 'last'
+  --       end,
+  --     })
+  --   end,
+  -- },
+  -- {
+  --   'rmagatti/auto-session',
+  --   config = function()
+  --     local auto_session = require 'auto-session'
+  --
+  --     auto_session.setup {
+  --       auto_restore_enabled = false,
+  --       auto_session_suppress_dirs = { '~/', '~/Dev/', '~/Downloads', '~/Documents', '~/Desktop/' },
+  --     }
+  --
+  --     local keymap = vim.keymap
+  --
+  --     keymap.set('n', '<leader>wr', '<cmd>SessionRestore<CR>', { desc = 'Restore session for cwd' }) -- restore last workspace session for current directory
+  --     keymap.set('n', '<leader>ws', '<cmd>SessionSave<CR>', { desc = 'Save session for auto session root dir' }) -- save workspace session for current working directory
+  --   end,
+  -- },
+  --
   { -- Autoformat
     'stevearc/conform.nvim',
     lazy = false,
