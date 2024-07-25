@@ -304,7 +304,7 @@ if vim.api.nvim_exec('echo argc()', true) == '0' then
       button('n', '  New Buffer', 'RainbowRed', ':tabnew<CR>'),
       button('f', '  Find file', 'RainbowYellow', ':Telescope find_files<CR>'),
       button('r', '  Recently opened files', 'RainbowBlue', ':Telescope oldfiles<CR>'),
-      button('p', '  Projects', 'RainbowOrange', ':Telescope marks<CR>'),
+      button('b', '  Bookmarks', 'RainbowOrange', ':Telescope marks<CR>'),
       -- dbutton("r", "  Frecency/MRU",          'RainbowCyan', ':Telescope oldfiles<CR>'),alpha
       -- button('g', '  Open Last Session', 'RainbowGreen', ':source ~/.config/nvim/session.vim<CR>'),
       -- button("m", "  Word Finder",           'RainbowViolet', ':Telescope live_grep<CR>'),
