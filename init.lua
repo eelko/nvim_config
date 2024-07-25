@@ -102,6 +102,10 @@ vim.keymap.set('n', '<leader>tu', vim.cmd.UndotreeToggle, { desc = 'Toggle Undo 
 vim.keymap.set('n', '+', '<C-a>')
 vim.keymap.set('n', '_', '<C-x>')
 
+-- Stay in indent mode
+vim.keymap.set('v', '<', '<gv^')
+vim.keymap.set('v', '>', '>gv^')
+
 -- select up down with shift
 vim.keymap.set('n', '<S-up>', 'V<up>')
 vim.keymap.set('n', '<S-down>', 'V<down>')
