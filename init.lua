@@ -793,6 +793,10 @@ require('lazy').setup({
       luasnip.config.setup {}
 
       cmp.setup {
+        window = { -- make rounded edges around completion suggestions to be clearer.
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
+        },
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -888,6 +892,9 @@ require('lazy').setup({
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
+
+  -- Colorschemes
+
   { 'projekt0n/github-nvim-theme', name = 'github', priority = 1000 },
   { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
   { 'cocopon/iceberg.vim', name = 'iceberg', priority = 1000 },
