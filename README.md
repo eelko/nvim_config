@@ -1,4 +1,4 @@
-# Eelko's neovim's config.
+# My neovim's config.
 
 ## Introduction
 Based on Kickstart.nvim.
