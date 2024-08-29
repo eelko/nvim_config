@@ -194,6 +194,7 @@ vim.keymap.set('n', '<leader>ul', '<cmd>colorscheme catppuccin-latte<CR>', { des
 vim.keymap.set('n', '<leader>un', '<cmd>colorscheme tokyonight-night<CR>', { desc = 'tokyonight-night' })
 vim.keymap.set('n', '<leader>ugl', '<cmd>colorscheme github_light<CR>', { desc = 'github_light' })
 vim.keymap.set('n', '<leader>ugd', '<cmd>colorscheme github_dark_default<CR>', { desc = 'github_dark' })
+vim.keymap.set('n', '<leader>us', '<cmd>set laststatus=3<bar>hi WinSeparator guifg=#ff0000<CR>', { desc = 'add red window seperators' })
 
 -- quickfix
 vim.keymap.set('n', '[q', '<cmd>cprevious<cr>', { desc = 'Prev quickfix' })
