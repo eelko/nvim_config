@@ -755,7 +755,18 @@ require('lazy').setup({
   -- Colorschemes
 
   { 'projekt0n/github-nvim-theme', name = 'github', priority = 1000 },
-  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    priority = 1000,
+    opts = {
+      custom_highlights = function(colors)
+        return {
+          WinSeperator = { fg = '#ff0000' },
+        }
+      end,
+    },
+  },
   { 'cocopon/iceberg.vim', name = 'iceberg', priority = 1000 },
   {
     'folke/tokyonight.nvim',
@@ -764,6 +775,8 @@ require('lazy').setup({
       vim.cmd.colorscheme 'tokyonight-night'
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=italic'
+      vim.cmd.hi 'WinSeparator guifg=#ff0000'
+      vim.cmd.set 'laststatus=3'
     end,
   },
 
