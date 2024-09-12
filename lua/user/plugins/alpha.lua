@@ -177,6 +177,14 @@ if vim.api.nvim_exec('echo argc()', true) == '0' then
     },
 
     {
+      [[█▀▄▀█ ▄███▄   ██▄   ▄█ ██▄   ████▄ ]],
+      [[█ █ █ █▀   ▀  █  █  ██ █  █  █   █ ]],
+      [[█ ▄ █ ██▄▄    █   █ ██ █   █ █   █ ]],
+      [[█   █ █▄   ▄▀ █  █  ▐█ █  █  ▀████ ]],
+      [[   █  ▀███▀   ███▀   ▐ ███▀        ]],
+      [[  ▀                                ]],
+    },
+    {
       [[                               __                ]],
       [[  ___     ___    ___   __  __ /\_\    ___ ___    ]],
       [[ / _ `\  / __`\ / __`\/\ \/\ \\/\ \  / __` __`\  ]],
@@ -271,8 +279,8 @@ if vim.api.nvim_exec('echo argc()', true) == '0' then
   math.randomseed(os.time()) -- random initialize
   local header = {
     type = 'text',
-    val = Headers[math.random(0, 11)],
-    -- val = Headers[11],
+    -- val = Headers[math.random(0, 11)],
+    val = Headers[9],
     opts = {
       position = 'center',
       hl = 'Whitespace',
