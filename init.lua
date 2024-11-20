@@ -686,19 +686,19 @@ require('lazy').setup({
 
   -- Autopairs
   -- :help ultimate-autopair
-  {
-    'altermo/ultimate-autopair.nvim',
-    event = { 'InsertEnter', 'CmdlineEnter' },
-    branch = 'v0.6', --recommended as each new version will have breaking changes
-    opts = {
-      --Config goes here
-      fastwarp = {
-        multi = true,
-        {},
-        { faster = true, map = '<C-A-e>', cmap = '<C-A-e>' },
-      },
-    },
-  },
+  -- {
+  --   'altermo/ultimate-autopair.nvim',
+  --   event = { 'InsertEnter', 'CmdlineEnter' },
+  --   branch = 'v0.6', --recommended as each new version will have breaking changes
+  --   opts = {
+  --     --Config goes here
+  --     fastwarp = {
+  --       multi = true,
+  --       {},
+  --       { faster = true, map = '<C-A-e>', cmap = '<C-A-e>' },
+  --     },
+  --   },
+  -- },
 
   -- Vertical line indentation
   { -- Add indentation guides even on blank lines
@@ -786,28 +786,28 @@ require('lazy').setup({
   -- Scrollbar
   { 'dstein64/nvim-scrollview' },
 
-  { -- Surrounding chars
-    'echasnovski/mini.surround',
-    event = 'VeryLazy',
-    config = function()
-      require('mini.surround').setup {
-        -- some setup
-        mappings = {
-          add = '<leader>sa', -- Add surrounding in Normal and Visual modes
-          delete = '<leader>sd', -- Delete surrounding
-          find = '<leader>sf', -- Find surrounding (to the right)
-          find_left = '<leader>sF', -- Find surrounding (to the left)
-          highlight = '<leader>sh', -- Highlight surrounding
-          replace = '<leader>sr', -- Replace surrounding
-          update_n_lines = '<leader>sn', -- Update `n_lines`
-
-          suffix_last = 'l', -- Suffix to search with "prev" method
-          suffix_next = 'n', -- Suffix to search with "next" method
-        },
-      }
-    end,
-    vim.keymap.set('n', '<leader>s', '', { desc = 'surround' }),
-  },
+  -- { -- Surrounding chars
+  --   'echasnovski/mini.surround',
+  --   event = 'VeryLazy',
+  --   config = function()
+  --     require('mini.surround').setup {
+  --       -- some setup
+  --       mappings = {
+  --         add = '<leader>sa', -- Add surrounding in Normal and Visual modes
+  --         delete = '<leader>sd', -- Delete surrounding
+  --         find = '<leader>sf', -- Find surrounding (to the right)
+  --         find_left = '<leader>sF', -- Find surrounding (to the left)
+  --         highlight = '<leader>sh', -- Highlight surrounding
+  --         replace = '<leader>sr', -- Replace surrounding
+  --         update_n_lines = '<leader>sn', -- Update `n_lines`
+  --
+  --         suffix_last = 'l', -- Suffix to search with "prev" method
+  --         suffix_next = 'n', -- Suffix to search with "next" method
+  --       },
+  --     }
+  --   end,
+  --   vim.keymap.set('n', '<leader>s', '', { desc = 'surround' }),
+  -- },
   -- {
   --   'tjdevries/express_line.nvim',
   --   dependencies = { 'nvim-lua/plenary.nvim' },
