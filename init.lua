@@ -457,7 +457,15 @@ require('lazy').setup({
       end, { desc = 'Find Neovim Words' })
     end,
   },
-
+  {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    dependencies = { { 'echasnovski/mini.icons', opts = {} } },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+  },
   -- Align with extra ease
   {
     'RRethy/nvim-align',
@@ -885,14 +893,6 @@ require('lazy').setup({
     build = function()
       vim.fn['mkdp#util#install']()
     end,
-  },
-  {
-    'stevearc/oil.nvim',
-    opts = {},
-    -- Optional dependencies
-    dependencies = { 'echasnovski/mini.icons' },
-    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
-    -- require('oil').setup(),
   },
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
