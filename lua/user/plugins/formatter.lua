@@ -31,6 +31,14 @@ return { -- Autoformat
       -- You can use a sub-list to tell conform to run *until* a formatter
       -- is found.
       -- javascript = { { "prettierd", "prettier" } },
+      formatters = {
+        clang_format = {
+          prepend_args = { '-style="{IndentWidth: 4}"' },
+        },
+        prettier = {
+          append_args = { '--tab-width', '4' },
+        },
+      },
     },
   },
 }
