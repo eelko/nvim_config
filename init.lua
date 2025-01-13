@@ -885,12 +885,17 @@ require('lazy').setup({
 
           keymaps = {
             -- You can use the capture groups defined in textobjects.scm
-            ['af'] = '@function.outer',
-            ['if'] = '@function.inner',
-            ['ac'] = '@class.outer',
-            -- You can optionally set descriptions to the mappings (used in the desc parameter of
-            -- nvim_buf_set_keymap) which plugins like which-key display
-            ['ic'] = { query = '@class.inner', desc = 'Select inner part of a class region' },
+            ['aa'] = { query = '@parameter.outer', desc = 'Select around parameter' },
+            ['ia'] = { query = '@parameter.inner', desc = 'Select inside parameter' },
+            ['af'] = { query = '@function.outer', desc = 'Select around function' },
+            ['if'] = { query = '@function.inner', desc = 'Select inside function' },
+            ['ac'] = { query = '@class.outer', desc = 'Select around class/struct' },
+            ['ic'] = { query = '@class.inner', desc = 'Select inside class/struct' },
+            ['ii'] = { query = '@conditional.inner', desc = 'Select inside if' },
+            ['ai'] = { query = '@conditional.outer', desc = 'Select around if' },
+            ['il'] = { query = '@loop.inner', desc = 'Select inside loop' },
+            ['al'] = { query = '@loop.outer', desc = 'Select around loop' },
+            ['a/'] = { query = '@comment.outer', desc = 'Select around comment' },
             -- You can also use captures from other query groups like `locals.scm`
             -- ['as'] = { query = '@local.scope', query_group = 'locals', desc = 'Select language scope' },
           },
@@ -904,6 +909,7 @@ require('lazy').setup({
           selection_modes = {
             ['@parameter.outer'] = 'v', -- charwise
             ['@function.outer'] = 'V', -- linewise
+            ['@comment.outer'] = 'V', -- linewise
             ['@class.outer'] = '<c-v>', -- blockwise
           },
           -- If you set this to `true` (default is `false`) then any textobject is
@@ -915,7 +921,7 @@ require('lazy').setup({
           -- * query_string: eg '@function.inner'
           -- * selection_mode: eg 'v'
           -- and should return true or false
-          include_surrounding_whitespace = true,
+          -- include_surrounding_whitespace = true,
         },
 
         move = {
@@ -923,7 +929,11 @@ require('lazy').setup({
           set_jumps = true, -- whether to set jumps in the jumplist
           goto_next_start = {
             [']f'] = '@function.outer',
-            [']]'] = { query = '@class.outer', desc = 'Next class start' },
+            [']]'] = { query = { '@class.outer', '@function.outer', '@conditional.outer', '@loop.outer', '@comment.outer' }, desc = 'Next Item' },
+            [']c'] = { query = '@class.outer', desc = 'Next class start' },
+            [']i'] = { query = '@conditional.outer', desc = 'Next if' },
+            [']l'] = { query = '@loop.outer', desc = 'Next loop' },
+            [']/'] = { query = '@comment.outer', desc = 'Next comment' },
             --
             -- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queries.
             -- [']o'] = '@loop.*',
@@ -936,25 +946,32 @@ require('lazy').setup({
           },
           goto_next_end = {
             [']F'] = '@function.outer',
-            [']['] = '@class.outer',
+            -- [']['] = '@class.outer',
           },
           goto_previous_start = {
+            ['[['] = { query = { '@class.outer', '@function.outer', '@conditional.outer', '@loop.outer', '@comment.outer' }, desc = 'Previous Item' },
             ['[f'] = '@function.outer',
-            ['[['] = '@class.outer',
+            ['[c'] = '@class.outer',
+            ['[i'] = { query = '@conditional.outer', desc = 'Previous if' },
+            ['[l'] = { query = '@loop.outer', desc = 'Previous loop' },
+            ['[/'] = { query = '@comment.outer', desc = 'Previous comment' },
+            --
           },
           goto_previous_end = {
             ['[F'] = '@function.outer',
-            ['[]'] = '@class.outer',
+            -- ['[]'] = '@class.outer',
           },
           -- Below will go to either the start or the end, whichever is closer.
           -- Use if you want more granular movements
           -- Make it even more gradual by adding multiple queries and regex.
-          -- goto_next = {
-          --   [']d'] = '@conditional.outer',
-          -- },
-          -- goto_previous = {
-          --   ['[d'] = '@conditional.outer',
-          -- },
+          goto_next = {
+            -- [']]'] = { query = '@conditional.outer', desc = 'Next whatever' },
+            -- [']d'] = '@conditional.outer',
+          },
+          goto_previous = {
+            -- ['[d'] = '@conditional.outer',
+            -- ['[['] = { query = '@conditional.outer', desc = 'Previous whatever' },
+          },
         },
       },
     },
