@@ -929,7 +929,7 @@ require('lazy').setup({
           set_jumps = true, -- whether to set jumps in the jumplist
           goto_next_start = {
             [']f'] = '@function.outer',
-            [']]'] = { query = { '@class.outer', '@function.outer', '@conditional.outer', '@loop.outer', '@comment.outer' }, desc = 'Next Item' },
+            [']]'] = { query = { '@class.outer', '@function.outer', '@conditional.outer', '@loop.outer' }, desc = 'Next Item' },
             [']c'] = { query = '@class.outer', desc = 'Next class start' },
             [']i'] = { query = '@conditional.outer', desc = 'Next if' },
             [']l'] = { query = '@loop.outer', desc = 'Next loop' },
@@ -949,7 +949,7 @@ require('lazy').setup({
             -- [']['] = '@class.outer',
           },
           goto_previous_start = {
-            ['[['] = { query = { '@class.outer', '@function.outer', '@conditional.outer', '@loop.outer', '@comment.outer' }, desc = 'Previous Item' },
+            ['[['] = { query = { '@class.outer', '@function.outer', '@conditional.outer', '@loop.outer' }, desc = 'Previous Item' },
             ['[f'] = '@function.outer',
             ['[c'] = '@class.outer',
             ['[i'] = { query = '@conditional.outer', desc = 'Previous if' },
