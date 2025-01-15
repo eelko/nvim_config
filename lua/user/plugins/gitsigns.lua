@@ -47,10 +47,6 @@ return {
         map('n', '<leader>gu', gitsigns.undo_stage_hunk, { desc = 'git undo stage hunk' })
         map('n', '<leader>gR', gitsigns.reset_buffer, { desc = 'git Reset buffer' })
         map('n', '<leader>gp', gitsigns.preview_hunk, { desc = 'git preview hunk' })
-        map('n', '<leader>gd', gitsigns.diffthis, { desc = 'git diff against index' })
-        map('n', '<leader>gD', function()
-          gitsigns.diffthis '@'
-        end, { desc = 'git Diff against last commit' })
         map('n', '<leader>gb', gitsigns.blame_line, { desc = 'git blame line' })
         map('n', '<leader>gB', gitsigns.toggle_current_line_blame, { desc = 'Toggle git show blame line' })
         map('n', '<leader>gtd', gitsigns.toggle_deleted, { desc = 'git Toggle Deleted' })
