@@ -16,6 +16,6 @@ return {
   keys = {
     { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
     { '<leader>gw', '<cmd>LazyGitFilter<cr>', desc = 'Open project commits' },
-    { '<leader>gb', '<cmd>LazyGitFilterCurrentFile<cr>', desc = 'Open buffer commits' },
+    { '<leader>gv', '<cmd>LazyGitFilterCurrentFile<cr>', desc = 'Open buffer commits' },
   },
 }
