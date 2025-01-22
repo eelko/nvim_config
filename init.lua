@@ -107,6 +107,8 @@ vim.keymap.set('n', '+', '<C-a>')
 vim.keymap.set('n', '_', '<C-x>')
 
 -- Stay in indent mode
+vim.keymap.set('n', '<', '<S-V><')
+vim.keymap.set('n', '>', '<S-V>>')
 vim.keymap.set('v', '<', '<gv^')
 vim.keymap.set('v', '>', '>gv^')
 
@@ -289,25 +291,25 @@ require('lazy').setup({
   --    require('gitsigns').setup({ ... })
   --
   -- See `:help gitsigns` to understand what the configuration keys do
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-      signs_staged = {
-        add = { text = '┃+' },
-        change = { text = '┃~' },
-        delete = { text = '┃_' },
-        topdelete = { text = '┃‾' },
-        changedelete = { text = '┃~' },
-      },
-    },
-  },
+  -- { -- Adds git related signs to the gutter, as well as utilities for managing changes
+  --   'lewis6991/gitsigns.nvim',
+  --   opts = {
+  -- signs = {
+  --   add = { text = '+' },
+  --   change = { text = '~' },
+  --   delete = { text = '_' },
+  --   topdelete = { text = '‾' },
+  --   changedelete = { text = '~' },
+  -- },
+  -- signs_staged = {
+  --   add = { text = '┃+' },
+  --   change = { text = '┃~' },
+  --   delete = { text = '┃_' },
+  --   topdelete = { text = '┃‾' },
+  --   changedelete = { text = '┃~' },
+  -- },
+  --   },
+  -- },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -457,7 +459,15 @@ require('lazy').setup({
       end, { desc = 'Find Neovim Words' })
     end,
   },
-
+  {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    dependencies = { { 'echasnovski/mini.icons', opts = {} } },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+  },
   -- Align with extra ease
   {
     'RRethy/nvim-align',
@@ -725,6 +735,19 @@ require('lazy').setup({
     'karb94/neoscroll.nvim',
     config = function()
       require('neoscroll').setup {}
+      neoscroll = require 'neoscroll'
+      local keymap = {
+        ['[['] = function()
+          neoscroll.ctrl_u { duration = 250 }
+        end,
+        [']]'] = function()
+          neoscroll.ctrl_d { duration = 250 }
+        end,
+      }
+      local modes = { 'n', 'v', 'x' }
+      for key, func in pairs(keymap) do
+        vim.keymap.set(modes, key, func)
+      end
     end,
   },
   -- maximise vim windows
@@ -818,6 +841,7 @@ require('lazy').setup({
   --   dependencies = { 'nvim-lua/plenary.nvim' },
   --   opts = {},
   -- },
+  { 'sindrets/diffview.nvim' },
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -850,6 +874,10 @@ require('lazy').setup({
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    dependencies = {
+      'RRethy/nvim-treesitter-textsubjects',
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    },
     build = ':TSUpdate',
     opts = {
       ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
@@ -863,6 +891,105 @@ require('lazy').setup({
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      textobjects = {
+
+        select = {
+          enable = true,
+
+          -- Automatically jump forward to textobj, similar to targets.vim
+          lookahead = true,
+
+          keymaps = {
+            -- You can use the capture groups defined in textobjects.scm
+            ['aa'] = { query = '@parameter.outer', desc = 'Select around parameter' },
+            ['ia'] = { query = '@parameter.inner', desc = 'Select inside parameter' },
+            ['af'] = { query = '@function.outer', desc = 'Select around function' },
+            ['if'] = { query = '@function.inner', desc = 'Select inside function' },
+            ['ac'] = { query = '@class.outer', desc = 'Select around class/struct' },
+            ['ic'] = { query = '@class.inner', desc = 'Select inside class/struct' },
+            ['ii'] = { query = '@conditional.inner', desc = 'Select inside if' },
+            ['ai'] = { query = '@conditional.outer', desc = 'Select around if' },
+            ['il'] = { query = '@loop.inner', desc = 'Select inside loop' },
+            ['al'] = { query = '@loop.outer', desc = 'Select around loop' },
+            ['a/'] = { query = '@comment.outer', desc = 'Select around comment' },
+            -- You can also use captures from other query groups like `locals.scm`
+            -- ['as'] = { query = '@local.scope', query_group = 'locals', desc = 'Select language scope' },
+          },
+          -- You can choose the select mode (default is charwise 'v')
+          --
+          -- Can also be a function which gets passed a table with the keys
+          -- * query_string: eg '@function.inner'
+          -- * method: eg 'v' or 'o'
+          -- and should return the mode ('v', 'V', or '<c-v>') or a table
+          -- mapping query_strings to modes.
+          selection_modes = {
+            ['@parameter.outer'] = 'v', -- charwise
+            ['@function.outer'] = 'V', -- linewise
+            ['@comment.outer'] = 'V', -- linewise
+            ['@class.outer'] = '<c-v>', -- blockwise
+          },
+          -- If you set this to `true` (default is `false`) then any textobject is
+          -- extended to include preceding or succeeding whitespace. Succeeding
+          -- whitespace has priority in order to act similarly to eg the built-in
+          -- `ap`.
+          --
+          -- Can also be a function which gets passed a table with the keys
+          -- * query_string: eg '@function.inner'
+          -- * selection_mode: eg 'v'
+          -- and should return true or false
+          -- include_surrounding_whitespace = true,
+        },
+
+        move = {
+          enable = true,
+          set_jumps = true, -- whether to set jumps in the jumplist
+          goto_next_start = {
+            [']f'] = '@function.outer',
+            -- [']]'] = { query = { '@class.outer', '@function.outer', '@conditional.outer', '@loop.outer' }, desc = 'Next Item' },
+            [']C'] = { query = '@class.outer', desc = 'Next class start' },
+            [']i'] = { query = '@conditional.outer', desc = 'Next if' },
+            [']l'] = { query = '@loop.outer', desc = 'Next loop' },
+            [']/'] = { query = '@comment.outer', desc = 'Next comment' },
+            --
+            -- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queries.
+            -- [']o'] = '@loop.*',
+            -- ["]o"] = { query = { "@loop.inner", "@loop.outer" } }
+            --
+            -- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
+            -- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
+            -- [']s'] = { query = '@local.scope', query_group = 'locals', desc = 'Next scope' },
+            -- [']z'] = { query = '@fold', query_group = 'folds', desc = 'Next fold' },
+          },
+          goto_next_end = {
+            [']F'] = '@function.outer',
+            -- [']['] = '@class.outer',
+          },
+          goto_previous_start = {
+            -- ['[['] = { query = { '@class.outer', '@function.outer', '@conditional.outer', '@loop.outer' }, desc = 'Previous Item' },
+            ['[f'] = '@function.outer',
+            ['[C'] = '@class.outer',
+            ['[i'] = { query = '@conditional.outer', desc = 'Previous if' },
+            ['[l'] = { query = '@loop.outer', desc = 'Previous loop' },
+            ['[/'] = { query = '@comment.outer', desc = 'Previous comment' },
+            --
+          },
+          goto_previous_end = {
+            ['[F'] = '@function.outer',
+            -- ['[]'] = '@class.outer',
+          },
+          -- Below will go to either the start or the end, whichever is closer.
+          -- Use if you want more granular movements
+          -- Make it even more gradual by adding multiple queries and regex.
+          goto_next = {
+            -- [']]'] = { query = '@conditional.outer', desc = 'Next whatever' },
+            -- [']d'] = '@conditional.outer',
+          },
+          goto_previous = {
+            -- ['[d'] = '@conditional.outer',
+            -- ['[['] = { query = '@conditional.outer', desc = 'Previous whatever' },
+          },
+        },
+      },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
@@ -878,6 +1005,7 @@ require('lazy').setup({
       --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
       --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+      require('nvim-treesitter.configs').setup(opts)
     end,
   },
 
@@ -887,17 +1015,21 @@ require('lazy').setup({
     'iamcco/markdown-preview.nvim',
     cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
     ft = { 'markdown' },
+    -- build = 'cd app && yarn install',
+    init = function()
+      vim.g.mkdp_filetypes = { 'markdown' }
+    end,
     build = function()
       vim.fn['mkdp#util#install']()
     end,
-  },
-  {
-    'stevearc/oil.nvim',
-    opts = {},
-    -- Optional dependencies
-    dependencies = { 'echasnovski/mini.icons' },
-    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
-    -- require('oil').setup(),
+    config = function()
+      vim.cmd [[
+           let g:mkdp_echo_preview_url = 1
+           let g:mkdp_open_to_the_world = 1
+           let g:mkdp_open_ip = '127.0.0.1'
+           let g:mkdp_port = '8080'
+        ]]
+    end,
   },
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
