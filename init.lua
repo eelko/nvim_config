@@ -735,6 +735,19 @@ require('lazy').setup({
     'karb94/neoscroll.nvim',
     config = function()
       require('neoscroll').setup {}
+      neoscroll = require 'neoscroll'
+      local keymap = {
+        ['[['] = function()
+          neoscroll.ctrl_u { duration = 250 }
+        end,
+        [']]'] = function()
+          neoscroll.ctrl_d { duration = 250 }
+        end,
+      }
+      local modes = { 'n', 'v', 'x' }
+      for key, func in pairs(keymap) do
+        vim.keymap.set(modes, key, func)
+      end
     end,
   },
   -- maximise vim windows
@@ -828,6 +841,7 @@ require('lazy').setup({
   --   dependencies = { 'nvim-lua/plenary.nvim' },
   --   opts = {},
   -- },
+  { 'sindrets/diffview.nvim' },
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -931,8 +945,8 @@ require('lazy').setup({
           set_jumps = true, -- whether to set jumps in the jumplist
           goto_next_start = {
             [']f'] = '@function.outer',
-            [']]'] = { query = { '@class.outer', '@function.outer', '@conditional.outer', '@loop.outer' }, desc = 'Next Item' },
-            [']c'] = { query = '@class.outer', desc = 'Next class start' },
+            -- [']]'] = { query = { '@class.outer', '@function.outer', '@conditional.outer', '@loop.outer' }, desc = 'Next Item' },
+            [']C'] = { query = '@class.outer', desc = 'Next class start' },
             [']i'] = { query = '@conditional.outer', desc = 'Next if' },
             [']l'] = { query = '@loop.outer', desc = 'Next loop' },
             [']/'] = { query = '@comment.outer', desc = 'Next comment' },
@@ -951,9 +965,9 @@ require('lazy').setup({
             -- [']['] = '@class.outer',
           },
           goto_previous_start = {
-            ['[['] = { query = { '@class.outer', '@function.outer', '@conditional.outer', '@loop.outer' }, desc = 'Previous Item' },
+            -- ['[['] = { query = { '@class.outer', '@function.outer', '@conditional.outer', '@loop.outer' }, desc = 'Previous Item' },
             ['[f'] = '@function.outer',
-            ['[c'] = '@class.outer',
+            ['[C'] = '@class.outer',
             ['[i'] = { query = '@conditional.outer', desc = 'Previous if' },
             ['[l'] = { query = '@loop.outer', desc = 'Previous loop' },
             ['[/'] = { query = '@comment.outer', desc = 'Previous comment' },
@@ -1001,8 +1015,20 @@ require('lazy').setup({
     'iamcco/markdown-preview.nvim',
     cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
     ft = { 'markdown' },
+    -- build = 'cd app && yarn install',
+    init = function()
+      vim.g.mkdp_filetypes = { 'markdown' }
+    end,
     build = function()
       vim.fn['mkdp#util#install']()
+    end,
+    config = function()
+      vim.cmd [[
+           let g:mkdp_echo_preview_url = 1
+           let g:mkdp_open_to_the_world = 1
+           let g:mkdp_open_ip = '127.0.0.1'
+           let g:mkdp_port = '8080'
+        ]]
     end,
   },
 
