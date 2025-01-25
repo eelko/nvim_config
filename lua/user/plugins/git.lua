@@ -1,7 +1,3 @@
--- Adds git related signs to the gutter, as well as utilities for managing changes
--- NOTE: gitsigns is already included in init.lua but contains only the base
--- config. This will add also the recommended keymaps.
-
 return {
   {
     'lewis6991/gitsigns.nvim',
@@ -51,6 +47,54 @@ return {
         map('n', '<leader>gB', gitsigns.toggle_current_line_blame, { desc = 'Toggle git show blame line' })
         map('n', '<leader>gtd', gitsigns.toggle_deleted, { desc = 'git Toggle Deleted' })
       end,
+    },
+  },
+
+  {
+    'tpope/vim-fugitive',
+    config = function()
+      vim.keymap.set('n', '<leader>gd', '<cmd>Gvdiffsplit<CR>', { desc = 'git diff against index' })
+    end,
+  },
+
+  { 'sindrets/diffview.nvim' },
+
+  {
+    'NeogitOrg/neogit',
+    dependencies = {
+      'nvim-lua/plenary.nvim', -- required
+      'sindrets/diffview.nvim', -- optional - Diff integration
+
+      -- Only one of these is needed.
+      'nvim-telescope/telescope.nvim', -- optional
+      -- 'ibhagwan/fzf-lua', -- optional
+      -- 'echasnovski/mini.pick', -- optional
+    },
+    config = true,
+    keys = {
+      { '<leader>gn', '<cmd>Neogit<cr>', desc = 'NeoGit' },
+    },
+  },
+
+  {
+    'kdheepak/lazygit.nvim',
+    cmd = {
+      'LazyGit',
+      'LazyGitConfig',
+      'LazyGitCurrentFile',
+      'LazyGitFilter',
+      'LazyGitFilterCurrentFile',
+    },
+    -- optional for floating window border decoration
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    -- setting the keybinding for LazyGit with 'keys' is recommended in
+    -- order to load the plugin when the command is run for the first time
+    keys = {
+      { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+      { '<leader>gw', '<cmd>LazyGitFilter<cr>', desc = 'Open project commits' },
+      { '<leader>gv', '<cmd>LazyGitFilterCurrentFile<cr>', desc = 'Open buffer commits' },
     },
   },
 }
