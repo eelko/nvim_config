@@ -50,12 +50,12 @@ return {
     },
   },
 
-  {
-    'tpope/vim-fugitive',
-    config = function()
-      vim.keymap.set('n', '<leader>gd', '<cmd>Gvdiffsplit<CR>', { desc = 'git diff against index' })
-    end,
-  },
+  -- {
+  --   'tpope/vim-fugitive',
+  --   config = function()
+  --     vim.keymap.set('n', '<leader>gd', '<cmd>Gvdiffsplit<CR>', { desc = 'git diff against index' })
+  --   end,
+  -- },
 
   { 'sindrets/diffview.nvim' },
 
@@ -73,6 +73,9 @@ return {
     config = true,
     keys = {
       { '<leader>gn', '<cmd>Neogit<cr>', desc = 'NeoGit' },
+      { '<leader>gdi', '<cmd>DiffviewOpen<cr>', desc = 'git diff' },
+      { '<leader>gdd', '<cmd>DiffviewOpen develop<cr>', desc = 'git diff against develop' },
+      { '<leader>gdc', '<cmd>DiffviewClose<cr>', desc = 'DiffviewClose' },
     },
   },
 
