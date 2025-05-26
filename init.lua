@@ -777,7 +777,7 @@ require('lazy').setup({
     init = function()
       vim.cmd.colorscheme 'tokyonight-night'
       -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment gui=italic'
+      vim.cmd.hi 'Comment guifg=#a883a5 gui=italic'
       vim.cmd.hi 'WinSeparator guifg=#ff0000'
       vim.cmd.set 'laststatus=3'
     end,
