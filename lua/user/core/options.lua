@@ -4,7 +4,7 @@
 
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.statuscolumn = '%s %l %r ' -- absolute and relative combined
+-- vim.opt.statuscolumn = '%s %l %r ' -- absolute and relative combined (disabled to allow default hybrid numbering)
 vim.opt.signcolumn = 'yes' -- Keep signcolumn on by default
 vim.opt.mouse = 'a' -- Always enable the mouse
 vim.opt.clipboard = 'unnamedplus' -- Sync clipboard between OS and Neovim.
