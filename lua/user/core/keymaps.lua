@@ -125,6 +125,10 @@ vim.keymap.set('n', '<leader>g', '', { desc = 'git' })
 vim.keymap.set('n', '<leader>p', '', { desc = 'plugins' })
 vim.keymap.set('n', '<leader>u', '', { desc = 'ux' })
 
+-- Switch between source and header
+vim.keymap.set('n', 'gs', '<cmd>:Ouroboros<cr>', { desc = 'Switch between source/header' })
+vim.keymap.set('n', '<leader>s', '<cmd>:Ouroboros<cr>', { desc = 'Switch between source/header' })
+
 -- [[ Custom commands ]]
 -- This function finds the root git directory of a current buffer
 local function get_git_root()
@@ -139,3 +143,4 @@ end, {})
 
 -- Keymap for the CdGitRoot command
 vim.keymap.set('n', '<leader>br', '<cmd>CdGitRoot<CR>', { desc = 'change CWD to git root of buffer' })
+

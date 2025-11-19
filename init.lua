@@ -2,9 +2,9 @@
 -- Modular configuration structure for better organization and maintainability
 
 -- Core configuration modules
-require 'user.core.globals'  -- Global settings and variables
-require 'user.core.options'  -- Vim options and settings  
-require 'user.core.keymaps'  -- Key mappings and shortcuts
+require 'user.core.globals' -- Global settings and variables
+require 'user.core.options' -- Vim options and settings
+require 'user.core.keymaps' -- Key mappings and shortcuts
 require 'user.core.autocmds' -- Auto commands and events
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -140,6 +140,11 @@ require('lazy').setup({
     'RRethy/nvim-align',
   },
 
+  {
+    'jakemason/ouroboros',
+    dependencies = { { 'nvim-lua/plenary.nvim' } },
+  },
+
   -- LSP Configuration
   {
     'neovim/nvim-lspconfig',
@@ -204,7 +209,6 @@ require('lazy').setup({
       local servers = {
         clangd = {
           filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto', 'hpp' },
-          vim.keymap.set('n', 'gs', '<cmd>:ClangdSwitchSourceHeader<cr>', { desc = 'Switch between source/header' }),
         },
         lua_ls = {
           settings = {
@@ -243,9 +247,27 @@ require('lazy').setup({
     event = 'BufReadPre',
     opts = {},
     keys = {
-      { "<leader>wr", function() require("persistence").load() end, desc = "Restore Session" },
-      { "<leader>wl", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
-      { "<leader>wd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
+      {
+        '<leader>wr',
+        function()
+          require('persistence').load()
+        end,
+        desc = 'Restore Session',
+      },
+      {
+        '<leader>wl',
+        function()
+          require('persistence').load { last = true }
+        end,
+        desc = 'Restore Last Session',
+      },
+      {
+        '<leader>wd',
+        function()
+          require('persistence').stop()
+        end,
+        desc = "Don't Save Current Session",
+      },
     },
   },
 
@@ -309,8 +331,22 @@ require('lazy').setup({
       },
     },
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      {"S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      {
+        's',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').jump()
+        end,
+        desc = 'Flash',
+      },
+      {
+        'S',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').treesitter()
+        end,
+        desc = 'Flash Treesitter',
+      },
     },
   },
 
