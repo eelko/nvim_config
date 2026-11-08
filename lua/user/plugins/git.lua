@@ -1,7 +1,3 @@
--- Adds git related signs to the gutter, as well as utilities for managing changes
--- NOTE: gitsigns is already included in init.lua but contains only the base
--- config. This will add also the recommended keymaps.
-
 return {
   {
     'lewis6991/gitsigns.nvim',
@@ -18,7 +14,7 @@ return {
         -- Navigation
         map('n', ']g', function()
           if vim.wo.diff then
-            vim.cmd.normal { ']g', bang = true }
+            vim.cmd.normal { ']c', bang = true }
           else
             gitsigns.nav_hunk 'next'
           end
@@ -26,7 +22,7 @@ return {
 
         map('n', '[g', function()
           if vim.wo.diff then
-            vim.cmd.normal { '[g', bang = true }
+            vim.cmd.normal { '[c', bang = true }
           else
             gitsigns.nav_hunk 'prev'
           end
@@ -41,16 +37,54 @@ return {
           gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
         end, { desc = 'reset git hunk' })
         -- normal mode
-        map('n', '<leader>gs', gitsigns.stage_hunk, { desc = 'git stage hunk' })
+        map('n', '<leader>gs', gitsigns.stage_hunk, { desc = 'git stage/unstage hunk' })
         map('n', '<leader>gr', gitsigns.reset_hunk, { desc = 'git reset hunk' })
         map('n', '<leader>gS', gitsigns.stage_buffer, { desc = 'git Stage buffer' })
-        map('n', '<leader>gu', gitsigns.undo_stage_hunk, { desc = 'git undo stage hunk' })
         map('n', '<leader>gR', gitsigns.reset_buffer, { desc = 'git Reset buffer' })
         map('n', '<leader>gp', gitsigns.preview_hunk, { desc = 'git preview hunk' })
         map('n', '<leader>gb', gitsigns.blame_line, { desc = 'git blame line' })
         map('n', '<leader>gB', gitsigns.toggle_current_line_blame, { desc = 'Toggle git show blame line' })
-        map('n', '<leader>gtd', gitsigns.toggle_deleted, { desc = 'git Toggle Deleted' })
+        map('n', '<leader>gtd', gitsigns.preview_hunk_inline, { desc = 'git preview hunk inline (deleted lines)' })
       end,
+    },
+  },
+
+  -- {
+  --   'tpope/vim-fugitive',
+  --   config = function()
+  --     vim.keymap.set('n', '<leader>gd', '<cmd>Gvdiffsplit<CR>', { desc = 'git diff against index' })
+  --   end,
+  -- },
+
+  {
+    'sindrets/diffview.nvim',
+    cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewFileHistory' },
+    keys = {
+      { '<leader>gdi', '<cmd>DiffviewOpen<cr>', desc = 'git diff' },
+      { '<leader>gdd', '<cmd>DiffviewOpen develop<cr>', desc = 'git diff against develop' },
+      { '<leader>gdc', '<cmd>DiffviewClose<cr>', desc = 'DiffviewClose' },
+    },
+  },
+
+  {
+    'kdheepak/lazygit.nvim',
+    cmd = {
+      'LazyGit',
+      'LazyGitConfig',
+      'LazyGitCurrentFile',
+      'LazyGitFilter',
+      'LazyGitFilterCurrentFile',
+    },
+    -- optional for floating window border decoration
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    -- setting the keybinding for LazyGit with 'keys' is recommended in
+    -- order to load the plugin when the command is run for the first time
+    keys = {
+      { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+      { '<leader>gw', '<cmd>LazyGitFilter<cr>', desc = 'Open project commits' },
+      { '<leader>gv', '<cmd>LazyGitFilterCurrentFile<cr>', desc = 'Open buffer commits' },
     },
   },
 }

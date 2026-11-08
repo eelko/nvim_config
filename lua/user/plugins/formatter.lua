@@ -1,11 +1,11 @@
-return { -- Autoformat
+return { -- Formatting: only on demand with <leader>lf (no format on save)
   'stevearc/conform.nvim',
-  lazy = false,
+  cmd = { 'ConformInfo' },
   keys = {
     {
       '<leader>lf',
       function()
-        require('conform').format { async = true, lsp_fallback = true }
+        require('conform').format { async = true, lsp_format = 'fallback' }
       end,
       mode = '',
       desc = 'LSP Format buffer',
@@ -13,31 +13,35 @@ return { -- Autoformat
   },
   opts = {
     notify_on_error = false,
-    format_on_save = function(bufnr)
-      -- Disable "format_on_save lsp_fallback" for languages that don't
-      -- have a well standardized coding style. You can add additional
-      -- languages here or re-enable it for the disabled ones.
-      local disable_filetypes = { c = true, cpp = true }
-      return {
-        timeout_ms = 500,
-        lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-      }
-    end,
     formatters_by_ft = {
-      lua = { 'stylua' },
+      -- Filetypes not listed here (lua, yaml) fall back to their language server
+      c = { 'clang_format' },
+      cpp = { 'clang_format' },
+      nix = { 'nixpkgs_fmt' },
+      toml = { 'taplo' },
+      python = { 'ruff_format' },
+      sh = { 'shfmt' },
+      bash = { 'shfmt' },
+      rust = { 'rustfmt' },
       -- Conform can also run multiple formatters sequentially
       -- python = { "isort", "black" },
       --
       -- You can use a sub-list to tell conform to run *until* a formatter
       -- is found.
       -- javascript = { { "prettierd", "prettier" } },
-      formatters = {
-        clang_format = {
-          prepend_args = { '-style="{IndentWidth: 4}"' },
-        },
-        prettier = {
-          append_args = { '--tab-width', '4' },
-        },
+    },
+    formatters = {
+      clang_format = {
+        -- Use the project's .clang-format if there is one, otherwise 4-space indents
+        prepend_args = function(_, ctx)
+          if vim.fs.find({ '.clang-format', '_clang-format' }, { path = ctx.dirname, upward = true })[1] then
+            return {}
+          end
+          return { '-style={IndentWidth: 4}' }
+        end,
+      },
+      prettier = {
+        append_args = { '--tab-width', '4' },
       },
     },
   },
