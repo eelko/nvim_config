@@ -6,6 +6,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 -- vim.opt.statuscolumn = '%s %l %r ' -- absolute and relative combined (disabled to allow default hybrid numbering)
 vim.opt.signcolumn = 'yes' -- Keep signcolumn on by default
+vim.opt.colorcolumn = '120' -- show a column at 100 position chars
 vim.opt.mouse = 'a' -- Always enable the mouse
 vim.opt.clipboard = 'unnamedplus' -- Sync clipboard between OS and Neovim.
 vim.opt.breakindent = true -- Enable break indent
@@ -34,6 +35,7 @@ vim.opt.shiftwidth = 4 -- Number of spaces inserted when indenting
 vim.opt.showmode = false -- Don't show the mode, since it's already in the status line
 vim.opt.hlsearch = true -- Set highlight on search
 vim.opt.incsearch = true -- Highlight search while typing
+vim.opt.completeopt = "menuone,noinsert,noselect" -- completion options
 
 -- Legacy vim commands for special features
 vim.cmd [[ set iskeyword+=- ]] -- add dash to make word reference word-with-dashes
